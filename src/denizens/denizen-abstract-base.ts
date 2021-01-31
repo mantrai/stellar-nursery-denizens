@@ -43,57 +43,6 @@ export default abstract class DenizenAbstractBase {
         return this._denizenName;
     }
 
-    protected getValues(key: string): string[] {
-        return this._dictionaries.has(key) ? (this._dictionaries.get(key) as string[]) : ([] as string[]);
-    }
-
-    protected replaceValues(key: string, values: string[]) {
-        this._dictionaries.set(key, values);
-    }
-
-    protected appendValues(key: string, values: string[]) {
-        this._dictionaries.set(key, this.mergeUniqueArrays<string>(this._dictionaries.get(key), values));
-    }
-
-    protected shuffleValues(key: string) {
-        this.replaceValues(key, this.shuffle(this._dictionaries.get(key)));
-    }
-
-    protected getRandomValue(key: string): string | boolean {
-        const values: string[] = this._dictionaries.has(key)
-            ? (this._dictionaries.get(key) as string[])
-            : ([] as string[]);
-        const len = values.length - 1;
-        return values[this.random.between(0, len)];
-    }
-
-    protected mergeUniqueArrays<T>(arr1: T[] | undefined, arr2: T[]) {
-        if (arr1 === undefined) {
-            return arr2;
-        }
-        return [...new Set(arr1.concat(...arr2))];
-    }
-
-    protected shuffle<T>(arr1: T[] | undefined): T[] {
-        if (arr1 === undefined) {
-            return [];
-        }
-        if (this._random === undefined) {
-            throw new Error('seed factory not set.');
-        }
-        let currentIndex = arr1.length;
-        let temporaryValue;
-        let randomIndex;
-        while (0 !== currentIndex) {
-            randomIndex = Math.floor(this._random.random() * currentIndex);
-            currentIndex -= 1;
-            temporaryValue = arr1[currentIndex];
-            arr1[currentIndex] = arr1[randomIndex];
-            arr1[randomIndex] = temporaryValue;
-        }
-        return arr1;
-    }
-
     abstract generateSystemName(isPopulated: boolean): string;
     abstract generateStarNames(qty: number): string[];
     abstract generatePlanetName(position: number): string;

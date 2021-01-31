@@ -7,6 +7,7 @@ import { ThemeAnimalsMythical } from '../dict/theme/animals/mythical';
 import { NumericRoman } from '../dict/numeric/roman';
 import RandomSeedFactory from 'stellar-nursery-shared/lib/random-seed-factory';
 import RollResults from 'stellar-nursery-shared/lib/roll-results';
+import * as manip from 'stellar-nursery-shared/lib/manipulate';
 
 export default class TyrCommonwealthDenizen extends DenizenAbstractBase {
     private _roman: string[] = [];
@@ -51,17 +52,17 @@ export default class TyrCommonwealthDenizen extends DenizenAbstractBase {
     private setThemeData(theme: string, key: string) {
         switch (theme) {
             case 'protoNorse':
-                this.appendValues(key, ThemeMythologyNorse);
-                this.appendValues(key, ThemeMythologyGermanic);
-                this.shuffleValues(key);
+                manip.appendValues<string, string>(this._dictionaries, key, ThemeMythologyNorse);
+                manip.appendValues<string, string>(this._dictionaries, key, ThemeMythologyGermanic);
+                manip.shuffleValues<string, string>(this._dictionaries, key, this._random as RandomSeedFactory);
                 break;
             case 'chinese':
-                this.appendValues(key, ThemeMythologyChinese);
-                this.shuffleValues(key);
+                manip.appendValues<string, string>(this._dictionaries, key, ThemeMythologyChinese);
+                manip.shuffleValues<string, string>(this._dictionaries, key, this._random as RandomSeedFactory);
                 break;
             case 'ThemeAnimalsMythical':
-                this.appendValues(key, ThemeAnimalsMythical);
-                this.shuffleValues(key);
+                manip.appendValues<string, string>(this._dictionaries, key, ThemeAnimalsMythical);
+                manip.shuffleValues<string, string>(this._dictionaries, key, this._random as RandomSeedFactory);
                 break;
         }
     }
@@ -76,7 +77,11 @@ export default class TyrCommonwealthDenizen extends DenizenAbstractBase {
 
     generateSystemName(isPopulated: boolean): string {
         const key = isPopulated ? 'populated' : 'unpopulated';
-        const output: string | boolean = this.getRandomValue(key);
+        const output: string | boolean = manip.getRandomValue<string, string>(
+            this._dictionaries,
+            key,
+            this._random as RandomSeedFactory,
+        );
 
         this._isPopulated = isPopulated;
         this._systemName = output === false ? '' : (output as string);
@@ -87,7 +92,11 @@ export default class TyrCommonwealthDenizen extends DenizenAbstractBase {
         let output: string | boolean;
 
         if (this._isPopulated) {
-            output = this.getRandomValue('populated');
+            output = manip.getRandomValue<string, string>(
+                this._dictionaries,
+                'populated',
+                this._random as RandomSeedFactory,
+            );
         } else {
             output = planetName + '-' + this._greek[position];
         }
@@ -96,10 +105,14 @@ export default class TyrCommonwealthDenizen extends DenizenAbstractBase {
     }
 
     generatePlanetName(position: number): string {
-        let output: string | boolean = '';
+        let output: string | boolean;
 
         if (this._isPopulated) {
-            output = this.getRandomValue('populated');
+            output = manip.getRandomValue<string, string>(
+                this._dictionaries,
+                'populated',
+                this._random as RandomSeedFactory,
+            );
         } else {
             output = this._systemName + ' ' + this._roman[position];
         }
