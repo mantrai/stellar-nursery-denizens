@@ -44,7 +44,7 @@ export default abstract class DenizenAbstractBase {
     }
 
     protected getValues(key: string): string[] {
-        return this._dictionaries.has(key) ? this._dictionaries.get(key) as string[] : [] as string[];
+        return this._dictionaries.has(key) ? (this._dictionaries.get(key) as string[]) : ([] as string[]);
     }
 
     protected replaceValues(key: string, values: string[]) {
@@ -60,7 +60,9 @@ export default abstract class DenizenAbstractBase {
     }
 
     protected getRandomValue(key: string): string | boolean {
-        const values: string[] = this._dictionaries.has(key) ? this._dictionaries.get(key) as string[] : [] as string[];
+        const values: string[] = this._dictionaries.has(key)
+            ? (this._dictionaries.get(key) as string[])
+            : ([] as string[]);
         const len = values.length - 1;
         return values[this.random.between(0, len)];
     }

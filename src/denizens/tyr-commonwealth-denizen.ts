@@ -79,7 +79,7 @@ export default class TyrCommonwealthDenizen extends DenizenAbstractBase {
         const output: string | boolean = this.getRandomValue(key);
 
         this._isPopulated = isPopulated;
-        this._systemName = output === false ? '' : output as string;
+        this._systemName = output === false ? '' : (output as string);
         return this._systemName;
     }
 
@@ -92,7 +92,7 @@ export default class TyrCommonwealthDenizen extends DenizenAbstractBase {
             output = planetName + '-' + this._greek[position];
         }
 
-        return output === false ? '' : output as string;
+        return output === false ? '' : (output as string);
     }
 
     generatePlanetName(position: number): string {
@@ -104,6 +104,6 @@ export default class TyrCommonwealthDenizen extends DenizenAbstractBase {
             output = this._systemName + ' ' + this._roman[position];
         }
 
-        return output === false ? '' : output as string;
+        return output === false ? '' : (output as string);
     }
 }
