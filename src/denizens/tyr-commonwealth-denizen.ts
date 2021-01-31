@@ -17,13 +17,13 @@ export default class TyrCommonwealthDenizen extends DenizenAbstractBase {
         this._techLevel = 15;
         this._denizenName = 'Tyr Commonwealth';
 
-        let pickPopulatedTheme = [
+        const pickPopulatedTheme = [
             new RollResults<string>(70, 'protoNorse'),
             new RollResults<string>(95, 'chinese'),
             new RollResults<string>(100, 'ThemeAnimalsMythical'),
         ];
 
-        let pickUnPopulatedTheme = [
+        const pickUnPopulatedTheme = [
             new RollResults<string>(50, 'protoNorse'),
             new RollResults<string>(60, 'chinese'),
             new RollResults<string>(100, 'ThemeAnimalsMythical'),
@@ -67,7 +67,7 @@ export default class TyrCommonwealthDenizen extends DenizenAbstractBase {
     }
 
     generateStarNames(qty: number): string[] {
-        let output: string[] = [];
+        const output: string[] = [];
         for (let i = 0; i < qty; i++) {
             output.push(this._systemName + ' ' + this._greek[i]);
         }
@@ -75,16 +75,16 @@ export default class TyrCommonwealthDenizen extends DenizenAbstractBase {
     }
 
     generateSystemName(isPopulated: boolean): string {
-        let key = isPopulated ? 'populated' : 'unpopulated';
-        let output: string | boolean = this.getRandomValue(key);
+        const key = isPopulated ? 'populated' : 'unpopulated';
+        const output: string | boolean = this.getRandomValue(key);
 
         this._isPopulated = isPopulated;
-        this._systemName = output === false ? '' : <string>output;
+        this._systemName = output === false ? '' : output as string;
         return this._systemName;
     }
 
     generateMoonName(planetName: string, position: number): string {
-        let output: string | boolean = '';
+        let output: string | boolean;
 
         if (this._isPopulated) {
             output = this.getRandomValue('populated');
@@ -92,7 +92,7 @@ export default class TyrCommonwealthDenizen extends DenizenAbstractBase {
             output = planetName + '-' + this._greek[position];
         }
 
-        return output === false ? '' : <string>output;
+        return output === false ? '' : output as string;
     }
 
     generatePlanetName(position: number): string {
@@ -104,6 +104,6 @@ export default class TyrCommonwealthDenizen extends DenizenAbstractBase {
             output = this._systemName + ' ' + this._roman[position];
         }
 
-        return output === false ? '' : <string>output;
+        return output === false ? '' : output as string;
     }
 }

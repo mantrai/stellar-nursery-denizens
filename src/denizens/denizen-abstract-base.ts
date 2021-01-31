@@ -44,7 +44,7 @@ export default abstract class DenizenAbstractBase {
     }
 
     protected getValues(key: string): string[] {
-        return this._dictionaries.has(key) ? <string[]>this._dictionaries.get(key) : <string[]>[];
+        return this._dictionaries.has(key) ? this._dictionaries.get(key) as string[] : [] as string[];
     }
 
     protected replaceValues(key: string, values: string[]) {
@@ -60,8 +60,8 @@ export default abstract class DenizenAbstractBase {
     }
 
     protected getRandomValue(key: string): string | boolean {
-        let values: string[] = this._dictionaries.has(key) ? <string[]>this._dictionaries.get(key) : [];
-        let len = values.length - 1;
+        const values: string[] = this._dictionaries.has(key) ? this._dictionaries.get(key) as string[] : [] as string[];
+        const len = values.length - 1;
         return values[this.random.between(0, len)];
     }
 
@@ -79,9 +79,9 @@ export default abstract class DenizenAbstractBase {
         if (this._random === undefined) {
             throw new Error('seed factory not set.');
         }
-        let currentIndex = arr1.length,
-            temporaryValue,
-            randomIndex;
+        let currentIndex = arr1.length;
+        let temporaryValue;
+        let randomIndex;
         while (0 !== currentIndex) {
             randomIndex = Math.floor(this._random.random() * currentIndex);
             currentIndex -= 1;
