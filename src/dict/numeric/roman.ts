@@ -1,4 +1,5 @@
 export const NumericRoman: string[] = [
+    '-',
     'I',
     'II',
     'III',

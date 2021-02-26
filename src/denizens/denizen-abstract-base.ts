@@ -1,14 +1,52 @@
 import RandomSeedFactory from 'stellar-nursery-shared/lib/random-seed-factory';
+import ThemeChance from "../objects/theme-chance";
 
 export default abstract class DenizenAbstractBase {
-    protected _random: RandomSeedFactory | undefined;
-    protected _techLevel: number = 0;
-    protected _denizenName: string = '';
-    protected _populatedSystemTheme = '';
     protected _systemTheme = '';
-    protected _dictionaries: Map<string, string[]> = new Map<string, string[]>();
-    protected _isPopulated: boolean = false;
+    protected _dictionaries: string[] = [];
     protected _systemName: string = '';
+    protected _moonNameless: number = -1;
+    protected _planetNameless: number = -1;
+    protected _used: number[] = [];
+
+    protected _random: RandomSeedFactory | undefined;
+
+    public get random(): RandomSeedFactory {
+        if (this._random === undefined) {
+            throw new Error('seed factory not set.');
+        }
+
+        return this._random;
+    }
+
+    protected _techLevel: number = 0;
+
+    public get techLevel(): number {
+        return this._techLevel;
+    }
+
+    protected getTheme(themes: ThemeChance[], rand:number, def: string) : string {
+        themes.forEach(function(chance) {
+           if  (rand <= chance.chance) {
+               return chance.theme;
+           }
+        });
+
+        return def;
+    }
+
+    protected shuffleDictionary() {
+        for (let i = this._dictionaries.length - 1; i > 0; i--) {
+            const j = Math.floor(this.random.random() * (i + 1));
+            [this._dictionaries[i], this._dictionaries[j]] = [this._dictionaries[j], this._dictionaries[i]];
+        }
+    }
+
+    protected _denizenName: string = '';
+
+    public get denizenName(): string {
+        return this._denizenName;
+    }
 
     public setup(randomSeedFactory: RandomSeedFactory): DenizenAbstractBase {
         this._random = randomSeedFactory;
@@ -19,32 +57,20 @@ export default abstract class DenizenAbstractBase {
         this._random = undefined;
         this._techLevel = 0;
         this._denizenName = '';
-        this._populatedSystemTheme = '';
         this._systemTheme = '';
-        this._dictionaries = new Map<string, string[]>();
+        this._dictionaries = [];
         this._systemName = '';
-        this._isPopulated = false;
+        this._moonNameless = -1;
+        this._planetNameless = -1;
+        this._used = [];
         return this;
     }
 
-    public get random(): RandomSeedFactory {
-        if (this._random === undefined) {
-            throw new Error('seed factory not set.');
-        }
+    abstract generateSystemName(): string;
 
-        return this._random;
-    }
-
-    public get techLevel(): number {
-        return this._techLevel;
-    }
-
-    public get denizenName(): string {
-        return this._denizenName;
-    }
-
-    abstract generateSystemName(isPopulated: boolean): string;
     abstract generateStarNames(qty: number): string[];
+
     abstract generatePlanetName(position: number): string;
+
     abstract generateMoonName(planetName: string, position: number): string;
 }

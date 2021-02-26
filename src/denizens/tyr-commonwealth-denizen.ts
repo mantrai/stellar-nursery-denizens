@@ -6,43 +6,31 @@ import { NumericGreek } from '../dict/numeric/greek';
 import { ThemeAnimalsMythical } from '../dict/theme/animals/mythical';
 import { NumericRoman } from '../dict/numeric/roman';
 import RandomSeedFactory from 'stellar-nursery-shared/lib/random-seed-factory';
-import RollResults from 'stellar-nursery-shared/lib/roll-results';
-import * as manip from 'stellar-nursery-shared/lib/manipulate';
+import ThemeChance from "../objects/theme-chance";
 
 export default class TyrCommonwealthDenizen extends DenizenAbstractBase {
     private _roman: string[] = [];
     private _greek: string[] = [];
+
     setup(randomSeedFactory: RandomSeedFactory): TyrCommonwealthDenizen {
         this.reset();
         super.setup(randomSeedFactory);
         this._techLevel = 15;
         this._denizenName = 'Tyr Commonwealth';
 
-        const pickPopulatedTheme = [
-            new RollResults<string>(70, 'protoNorse'),
-            new RollResults<string>(95, 'chinese'),
-            new RollResults<string>(100, 'ThemeAnimalsMythical'),
+        const pickTheme = [
+            new ThemeChance(70, 'protoNorse'),
+            new ThemeChance(95, 'chinese'),
+            new ThemeChance(100, 'ThemeAnimalsMythical'),
         ];
 
-        const pickUnPopulatedTheme = [
-            new RollResults<string>(50, 'protoNorse'),
-            new RollResults<string>(60, 'chinese'),
-            new RollResults<string>(100, 'ThemeAnimalsMythical'),
-        ];
-
-        this._populatedSystemTheme = this.random.getRollResult<string>(
-            pickPopulatedTheme,
-            this.random.between(1, 100),
-            'protoNorse',
-        );
-        this._systemTheme = this.random.getRollResult<string>(
-            pickUnPopulatedTheme,
+        this._systemTheme = this.getTheme(
+            pickTheme,
             this.random.between(1, 100),
             'ThemeAnimalsMythical',
         );
 
-        this.setThemeData(this._populatedSystemTheme, 'populated');
-        this.setThemeData(this._systemTheme, 'unpopulated');
+        this.setThemeData(this._systemTheme, 'populated');
         this._greek = NumericGreek;
         this._roman = NumericRoman;
 
@@ -52,71 +40,71 @@ export default class TyrCommonwealthDenizen extends DenizenAbstractBase {
     private setThemeData(theme: string, key: string) {
         switch (theme) {
             case 'protoNorse':
-                manip.appendValues<string, string>(this._dictionaries, key, ThemeMythologyNorse);
-                manip.appendValues<string, string>(this._dictionaries, key, ThemeMythologyGermanic);
-                manip.shuffleValues<string, string>(this._dictionaries, key, this._random as RandomSeedFactory);
+                this._dictionaries = this._dictionaries.concat(ThemeMythologyNorse, ThemeMythologyGermanic);
                 break;
             case 'chinese':
-                manip.appendValues<string, string>(this._dictionaries, key, ThemeMythologyChinese);
-                manip.shuffleValues<string, string>(this._dictionaries, key, this._random as RandomSeedFactory);
+                this._dictionaries = this._dictionaries.concat(ThemeMythologyChinese);
                 break;
             case 'ThemeAnimalsMythical':
-                manip.appendValues<string, string>(this._dictionaries, key, ThemeAnimalsMythical);
-                manip.shuffleValues<string, string>(this._dictionaries, key, this._random as RandomSeedFactory);
+                this._dictionaries = this._dictionaries.concat(ThemeAnimalsMythical);
                 break;
         }
+        this.shuffleDictionary();
     }
 
     generateStarNames(qty: number): string[] {
         const output: string[] = [];
-        for (let i = 0; i < qty; i++) {
+        for (let i = 1; i <= qty; i++) {
             output.push(this._systemName + ' ' + this._greek[i]);
         }
         return output;
     }
 
-    generateSystemName(isPopulated: boolean): string {
-        const key = isPopulated ? 'populated' : 'unpopulated';
-        const output: string | boolean = manip.getRandomValue<string, string>(
-            this._dictionaries,
-            key,
-            this._random as RandomSeedFactory,
-        );
-
-        this._isPopulated = isPopulated;
-        this._systemName = output === false ? '' : (output as string);
+    generateSystemName(): string {
+        const index = this.random.between(0, this._dictionaries.length - 1);
+        this._systemName = this._dictionaries[index];
+        this._used.push(index);
         return this._systemName;
     }
 
     generateMoonName(planetName: string, position: number): string {
-        let output: string | boolean;
+        let output;
+        let index = this.random.between(0, this._dictionaries.length - 1);
+        while(this._used.includes(index)) {
+            index = this.random.between(0, this._dictionaries.length - 1);
+        }
 
-        if (this._isPopulated) {
-            output = manip.getRandomValue<string, string>(
-                this._dictionaries,
-                'populated',
-                this._random as RandomSeedFactory,
-            );
+        if (this._moonNameless === -1) {
+            this._moonNameless = this.random.between(1, 100) > 65 ? 0 : 1;
+        }
+
+        if (this._moonNameless === 0) {
+            output = this._dictionaries[index];
+            this._used.push(index);
         } else {
             output = planetName + '-' + this._greek[position];
         }
 
-        return output === false ? '' : (output as string);
+        return output;
     }
 
     generatePlanetName(position: number): string {
-        let output: string | boolean;
-
-        if (this._isPopulated) {
-            output = manip.getRandomValue<string, string>(
-                this._dictionaries,
-                'populated',
-                this._random as RandomSeedFactory,
-            );
-        } else {
-            output = this._systemName + ' ' + this._roman[position];
+        let output;
+        let index = this.random.between(0, this._dictionaries.length - 1);
+        while(this._used.includes(index)) {
+            index = this.random.between(0, this._dictionaries.length - 1);
         }
 
-        return output === false ? '' : (output as string);
+        if (this._planetNameless === -1) {
+            this._planetNameless = this.random.between(1, 100) > 65 ? 0 : 1;
+        }
+        if (this._planetNameless === 0) {
+            output = this._dictionaries[index];
+            this._used.push(index);
+        } else {
+            output = this._systemName + '-' + this._roman[position];
+        }
+
+        return output;
     }
 }

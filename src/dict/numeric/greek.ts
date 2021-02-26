@@ -1,4 +1,5 @@
 export const NumericGreek: string[] = [
+    '-',
     'Alpha',
     'Beta',
     'Gamma',

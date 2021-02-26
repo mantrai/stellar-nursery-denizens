@@ -678,7 +678,7 @@ export const ThemeAnimalsMythical: string[] = [
     'Tomte',
     'Vampire',
     'Zashiki-warashi',
-    'Ammit',
+    'Lucifer',
     'Cerberus',
     'Cyclopes',
     'Demon',
