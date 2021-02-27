@@ -1,5 +1,5 @@
 import RandomSeedFactory from 'stellar-nursery-shared/lib/random-seed-factory';
-import ThemeChance from "../objects/theme-chance";
+import ThemeChance from '../objects/theme-chance';
 
 export default abstract class DenizenAbstractBase {
     protected _systemTheme = '';
@@ -60,7 +60,7 @@ export default abstract class DenizenAbstractBase {
     abstract generateMoonName(planetName: string, position: number): string;
 
     protected getTheme(themes: ThemeChance[], rand: number, def: string): string {
-        themes.forEach( (chance) => {
+        themes.forEach((chance) => {
             if (rand <= chance.chance) {
                 return chance.theme;
             }

@@ -1,12 +1,12 @@
 import DenizenAbstractBase from './denizen-abstract-base';
-import {ThemeMythologyNorse} from '../dict/theme/mythology/norse';
-import {ThemeMythologyGermanic} from '../dict/theme/mythology/germanic';
-import {ThemeMythologyChinese} from '../dict/theme/mythology/chinese';
-import {NumericGreek} from '../dict/numeric/greek';
-import {ThemeAnimalsMythical} from '../dict/theme/animals/mythical';
-import {NumericRoman} from '../dict/numeric/roman';
+import { ThemeMythologyNorse } from '../dict/theme/mythology/norse';
+import { ThemeMythologyGermanic } from '../dict/theme/mythology/germanic';
+import { ThemeMythologyChinese } from '../dict/theme/mythology/chinese';
+import { NumericGreek } from '../dict/numeric/greek';
+import { ThemeAnimalsMythical } from '../dict/theme/animals/mythical';
+import { NumericRoman } from '../dict/numeric/roman';
 import RandomSeedFactory from 'stellar-nursery-shared/lib/random-seed-factory';
-import ThemeChance from "../objects/theme-chance";
+import ThemeChance from '../objects/theme-chance';
 
 export default class TyrCommonwealthDenizen extends DenizenAbstractBase {
     private _roman: string[] = [];
@@ -24,11 +24,7 @@ export default class TyrCommonwealthDenizen extends DenizenAbstractBase {
             new ThemeChance(100, 'ThemeAnimalsMythical'),
         ];
 
-        this._systemTheme = this.getTheme(
-            pickTheme,
-            this.random.between(1, 100),
-            'ThemeAnimalsMythical',
-        );
+        this._systemTheme = this.getTheme(pickTheme, this.random.between(1, 100), 'ThemeAnimalsMythical');
 
         this.setThemeData(this._systemTheme);
         this._greek = NumericGreek;

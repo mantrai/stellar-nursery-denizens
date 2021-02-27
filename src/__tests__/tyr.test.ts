@@ -20,7 +20,7 @@ test('Default Randomizer all nameless', () => {
         ['Minokawa-I-Alpha'],
         ['Minokawa-II-Alpha', 'Minokawa-II-Beta', 'Minokawa-II-Gamma', 'Minokawa-II-Delta', 'Minokawa-II-Epsilon'],
         ['Minokawa-III-Alpha', 'Minokawa-III-Beta'],
-        []
+        [],
     ];
     for (let i = 0; i < planets.length; i++) {
         let moons = [];
@@ -52,7 +52,7 @@ test('Default Randomizer nameless planets', () => {
         ['Ondine', 'Werewolf'],
         ['Tennin', 'Nue', 'Dryad'],
         ['Jorōgumo'],
-        ["Sidehill", "Ghoul", "Mermaid", "Owlman", "Demon"]
+        ['Sidehill', 'Ghoul', 'Mermaid', 'Owlman', 'Demon'],
     ];
     for (let i = 0; i < planets.length; i++) {
         let moons = [];
@@ -84,8 +84,7 @@ test('Default Randomizer no nameless', () => {
         ['Hugin', 'Haetae', 'Wyvern', 'Vampire', 'Potamus'],
         ['Narasimha', 'Mokumokuren', 'Ammit'],
         ['Griffin', 'Madame', 'Adlet', 'Fairy', 'Ceryneian'],
-        ['Nue', 'Ziz', 'Tsuchinoko']
-
+        ['Nue', 'Ziz', 'Tsuchinoko'],
     ];
     for (let i = 0; i < planets.length; i++) {
         let moons = [];
@@ -97,5 +96,3 @@ test('Default Randomizer no nameless', () => {
         expect(moons).toStrictEqual(moonResults[i]);
     }
 });
-
-
