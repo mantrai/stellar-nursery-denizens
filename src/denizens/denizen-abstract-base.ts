@@ -60,7 +60,7 @@ export default abstract class DenizenAbstractBase {
     abstract generateMoonName(planetName: string, position: number): string;
 
     protected getTheme(themes: ThemeChance[], rand: number, def: string): string {
-        themes.forEach(function (chance) {
+        themes.forEach( (chance) => {
             if (rand <= chance.chance) {
                 return chance.theme;
             }
