@@ -1,7 +1,8 @@
 import RandomSeedFactory from 'stellar-nursery-shared/lib/random-seed-factory';
 import ThemeChance from '../objects/theme-chance';
+import {IDenizen} from "../i-denizen";
 
-export default abstract class DenizenAbstractBase {
+export default abstract class DenizenAbstractBase implements IDenizen {
     protected _systemTheme = '';
     protected _dictionaries: string[] = [];
     protected _systemName: string = '';
@@ -11,7 +12,7 @@ export default abstract class DenizenAbstractBase {
 
     protected _random: RandomSeedFactory | undefined;
 
-    public get random(): RandomSeedFactory {
+    get random(): RandomSeedFactory {
         if (this._random === undefined) {
             throw new Error('seed factory not set.');
         }
@@ -22,23 +23,23 @@ export default abstract class DenizenAbstractBase {
     protected _techLevel: number = 0;
 
     // noinspection JSUnusedGlobalSymbols
-    public get techLevel(): number {
+    get techLevel(): number {
         return this._techLevel;
     }
 
     protected _denizenName: string = '';
 
     // noinspection JSUnusedGlobalSymbols
-    public get denizenName(): string {
+    get denizenName(): string {
         return this._denizenName;
     }
 
-    public setup(randomSeedFactory: RandomSeedFactory): DenizenAbstractBase {
+    setup(randomSeedFactory: RandomSeedFactory): DenizenAbstractBase {
         this._random = randomSeedFactory;
         return this;
     }
 
-    public reset(): DenizenAbstractBase {
+    reset(): DenizenAbstractBase {
         this._random = undefined;
         this._techLevel = 0;
         this._denizenName = '';
@@ -59,7 +60,7 @@ export default abstract class DenizenAbstractBase {
 
     abstract generateMoonName(planetName: string, position: number): string;
 
-    protected getTheme(themes: ThemeChance[], rand: number, def: string): string {
+    getTheme(themes: ThemeChance[], rand: number, def: string): string {
         themes.forEach((chance) => {
             if (rand <= chance.chance) {
                 return chance.theme;
@@ -69,7 +70,7 @@ export default abstract class DenizenAbstractBase {
         return def;
     }
 
-    protected shuffleDictionary() {
+    shuffleDictionary() {
         for (let i = this._dictionaries.length - 1; i > 0; i--) {
             const j = Math.floor(this.random.random() * (i + 1));
             [this._dictionaries[i], this._dictionaries[j]] = [this._dictionaries[j], this._dictionaries[i]];
