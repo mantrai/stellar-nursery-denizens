@@ -1,6 +1,6 @@
-import RandomSeedFactory from "stellar-nursery-shared/lib/random-seed-factory";
-import ThemeChance from "./objects/theme-chance";
-import DenizenAbstractBase from "./denizens/denizen-abstract-base";
+import RandomSeedFactory from 'stellar-nursery-shared/lib/random-seed-factory';
+import ThemeChance from './objects/theme-chance';
+import DenizenAbstractBase from './denizens/denizen-abstract-base';
 
 export interface IDenizen {
     readonly random: RandomSeedFactory;

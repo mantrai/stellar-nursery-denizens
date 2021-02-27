@@ -1,6 +1,6 @@
 import RandomSeedFactory from 'stellar-nursery-shared/lib/random-seed-factory';
 import ThemeChance from '../objects/theme-chance';
-import {IDenizen} from "../i-denizen";
+import { IDenizen } from '../i-denizen';
 
 export default abstract class DenizenAbstractBase implements IDenizen {
     protected _systemTheme = '';
