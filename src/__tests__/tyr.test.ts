@@ -81,10 +81,10 @@ test('Default Randomizer no nameless', () => {
     expect(planets).toStrictEqual(['Lucifer', 'Kamaitachi', 'Salamander', 'Redcap']);
 
     const moonResults = [
-        [ 'Hugin', 'Haetae', 'Wyvern', 'Vampire', 'Potamus' ],
-        [ 'Narasimha', 'Mokumokuren', 'Ammit' ],
-        [ 'Griffin', 'Madame', 'Adlet', 'Fairy', 'Ceryneian' ],
-        [ 'Nue', 'Ziz', 'Tsuchinoko' ]
+        ['Hugin', 'Haetae', 'Wyvern', 'Vampire', 'Potamus'],
+        ['Narasimha', 'Mokumokuren', 'Ammit'],
+        ['Griffin', 'Madame', 'Adlet', 'Fairy', 'Ceryneian'],
+        ['Nue', 'Ziz', 'Tsuchinoko']
 
     ];
     for (let i = 0; i < planets.length; i++) {

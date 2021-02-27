@@ -1,10 +1,10 @@
 import DenizenAbstractBase from './denizen-abstract-base';
-import { ThemeMythologyNorse } from '../dict/theme/mythology/norse';
-import { ThemeMythologyGermanic } from '../dict/theme/mythology/germanic';
-import { ThemeMythologyChinese } from '../dict/theme/mythology/chinese';
-import { NumericGreek } from '../dict/numeric/greek';
-import { ThemeAnimalsMythical } from '../dict/theme/animals/mythical';
-import { NumericRoman } from '../dict/numeric/roman';
+import {ThemeMythologyNorse} from '../dict/theme/mythology/norse';
+import {ThemeMythologyGermanic} from '../dict/theme/mythology/germanic';
+import {ThemeMythologyChinese} from '../dict/theme/mythology/chinese';
+import {NumericGreek} from '../dict/numeric/greek';
+import {ThemeAnimalsMythical} from '../dict/theme/animals/mythical';
+import {NumericRoman} from '../dict/numeric/roman';
 import RandomSeedFactory from 'stellar-nursery-shared/lib/random-seed-factory';
 import ThemeChance from "../objects/theme-chance";
 
@@ -30,26 +30,11 @@ export default class TyrCommonwealthDenizen extends DenizenAbstractBase {
             'ThemeAnimalsMythical',
         );
 
-        this.setThemeData(this._systemTheme, 'populated');
+        this.setThemeData(this._systemTheme);
         this._greek = NumericGreek;
         this._roman = NumericRoman;
 
         return this;
-    }
-
-    private setThemeData(theme: string, key: string) {
-        switch (theme) {
-            case 'protoNorse':
-                this._dictionaries = this._dictionaries.concat(ThemeMythologyNorse, ThemeMythologyGermanic);
-                break;
-            case 'chinese':
-                this._dictionaries = this._dictionaries.concat(ThemeMythologyChinese);
-                break;
-            case 'ThemeAnimalsMythical':
-                this._dictionaries = this._dictionaries.concat(ThemeAnimalsMythical);
-                break;
-        }
-        this.shuffleDictionary();
     }
 
     generateStarNames(qty: number): string[] {
@@ -70,7 +55,7 @@ export default class TyrCommonwealthDenizen extends DenizenAbstractBase {
     generateMoonName(planetName: string, position: number): string {
         let output;
         let index = this.random.between(0, this._dictionaries.length - 1);
-        while(this._used.includes(index)) {
+        while (this._used.includes(index)) {
             index = this.random.between(0, this._dictionaries.length - 1);
         }
 
@@ -91,7 +76,7 @@ export default class TyrCommonwealthDenizen extends DenizenAbstractBase {
     generatePlanetName(position: number): string {
         let output;
         let index = this.random.between(0, this._dictionaries.length - 1);
-        while(this._used.includes(index)) {
+        while (this._used.includes(index)) {
             index = this.random.between(0, this._dictionaries.length - 1);
         }
 
@@ -106,5 +91,20 @@ export default class TyrCommonwealthDenizen extends DenizenAbstractBase {
         }
 
         return output;
+    }
+
+    private setThemeData(theme: string) {
+        switch (theme) {
+            case 'protoNorse':
+                this._dictionaries = this._dictionaries.concat(ThemeMythologyNorse, ThemeMythologyGermanic);
+                break;
+            case 'chinese':
+                this._dictionaries = this._dictionaries.concat(ThemeMythologyChinese);
+                break;
+            case 'ThemeAnimalsMythical':
+                this._dictionaries = this._dictionaries.concat(ThemeAnimalsMythical);
+                break;
+        }
+        this.shuffleDictionary();
     }
 }

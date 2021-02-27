@@ -21,29 +21,14 @@ export default abstract class DenizenAbstractBase {
 
     protected _techLevel: number = 0;
 
+    // noinspection JSUnusedGlobalSymbols
     public get techLevel(): number {
         return this._techLevel;
     }
 
-    protected getTheme(themes: ThemeChance[], rand:number, def: string) : string {
-        themes.forEach(function(chance) {
-           if  (rand <= chance.chance) {
-               return chance.theme;
-           }
-        });
-
-        return def;
-    }
-
-    protected shuffleDictionary() {
-        for (let i = this._dictionaries.length - 1; i > 0; i--) {
-            const j = Math.floor(this.random.random() * (i + 1));
-            [this._dictionaries[i], this._dictionaries[j]] = [this._dictionaries[j], this._dictionaries[i]];
-        }
-    }
-
     protected _denizenName: string = '';
 
+    // noinspection JSUnusedGlobalSymbols
     public get denizenName(): string {
         return this._denizenName;
     }
@@ -73,4 +58,21 @@ export default abstract class DenizenAbstractBase {
     abstract generatePlanetName(position: number): string;
 
     abstract generateMoonName(planetName: string, position: number): string;
+
+    protected getTheme(themes: ThemeChance[], rand: number, def: string): string {
+        themes.forEach(function (chance) {
+            if (rand <= chance.chance) {
+                return chance.theme;
+            }
+        });
+
+        return def;
+    }
+
+    protected shuffleDictionary() {
+        for (let i = this._dictionaries.length - 1; i > 0; i--) {
+            const j = Math.floor(this.random.random() * (i + 1));
+            [this._dictionaries[i], this._dictionaries[j]] = [this._dictionaries[j], this._dictionaries[i]];
+        }
+    }
 }
